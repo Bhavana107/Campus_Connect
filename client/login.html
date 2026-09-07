@@ -208,7 +208,7 @@
             <form id="authForm" class="auth-form" onsubmit="handleAuthSubmit(event)">
                 <div id="nameGroup" class="form-group" style="display: none;">
                     <label for="nameInput">Full Name</label>
-                    <input id="nameInput" type="text" class="auth-input" placeholder="e.g. Medha Srinath">
+                    <input id="nameInput" type="text" class="auth-input" placeholder="e.g. Maya">
                 </div>
 
                 <div class="form-group">
@@ -276,61 +276,20 @@
             }
         });
 
-        async function handleAuthSubmit(event) {
+        function handleAuthSubmit(event) {
             event.preventDefault();
             const email = document.getElementById('emailInput').value.trim();
-            const password = document.getElementById('passwordInput').value.trim();
             const name = document.getElementById('nameInput').value.trim();
-            const msgBox = document.getElementById('msgBox');
-            const submitBtn = document.getElementById('submitBtn');
 
-            submitBtn.disabled = true;
-            submitBtn.innerText = 'Please wait...';
-
-            try {
-                // Try backend API if available, or fallback gracefully
-                const endpoint = currentMode === 'login' ? '/api/auth/login' : '/api/auth/register';
-                const payload = currentMode === 'login' ? { email, password } : { name, email, password };
-                
-                let res;
-                try {
-                    res = await fetch(`http://localhost:5000${endpoint}`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                } catch (netErr) {
-                    // Fallback to local session storage if server not running
-                    console.log("Server offline, continuing locally", netErr);
-                }
-
-                if (res && res.ok) {
-                    const data = await res.json();
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('user', JSON.stringify(data.user || { name, email }));
-                } else {
-                    localStorage.setItem('user', JSON.stringify({ name: name || email.split('@')[0], email }));
-                }
-
-                if (currentMode === 'register') {
-                    alert(`🎉 Registration Successful!\n\nWelcome to Campus Connect, ${name || 'Student'}! Your student account has been created successfully.`);
-                    // Switch to login tab or proceed
-                    switchMode('login');
-                    document.getElementById('emailInput').value = email;
-                    document.getElementById('passwordInput').value = '';
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = 'Sign In to Portal';
-                } else {
-                    alert(`✅ Login Successful!\n\nWelcome back to Campus Connect!`);
-                    window.location.href = 'attendance.html';
-                }
-
-            } catch (error) {
-                msgBox.className = 'msg-box error';
-                msgBox.innerText = 'An error occurred. Please check your credentials.';
-                msgBox.style.display = 'block';
-                submitBtn.disabled = false;
-                submitBtn.innerText = currentMode === 'login' ? 'Sign In to Portal' : 'Create Student Account';
+            if (currentMode === 'register') {
+                alert(`New Student Registered: ${name}`);
+                switchMode('login');
+                document.getElementById('emailInput').value = email;
+                document.getElementById('passwordInput').value = '';
+                document.getElementById('passwordInput').focus();
+            } else {
+                alert(`Logging in with: ${email}`);
+                window.location.href = 'attendance.html';
             }
         }
     </script>

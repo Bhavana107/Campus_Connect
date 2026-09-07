@@ -185,6 +185,13 @@ body {
   border-top: 5px solid;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   text-align: left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.role-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15);
 }
 
 .feature-bullets {
@@ -205,6 +212,12 @@ body {
   color: white;
   font-weight: bold;
   cursor: pointer;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.btn-portal:hover {
+  filter: brightness(1.15);
+  transform: scale(1.02);
 }
 
 .student-bg {
@@ -369,4 +382,21 @@ body {
     font-size: 1.2rem;
     padding: 8px 11px;
   }
+}
+
+/* Footer */
+.footer {
+  background-color: #0A2240;
+  color: #ffffff;
+  text-align: center;
+  padding: 1.5rem 1rem;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.footer p:last-child {
+  color: #F2A900;
+  font-size: 0.8rem;
+  margin-top: 4px;
 }

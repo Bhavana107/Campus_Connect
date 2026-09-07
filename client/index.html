@@ -103,11 +103,11 @@
                     <div class="slide active-slide">
 
                         <img
-                            src="./src/assets/slide1.jpg"
-                            alt="University Campus">
+                            src="./src/assets/rvu_campus.png"
+                            alt="RV University Campus Infrastructure">
 
                         <div class="slide-caption">
-                            Modern University Infrastructure
+                            RV University Campus & Infrastructure
                         </div>
 
                     </div>
@@ -117,7 +117,7 @@
                     <div class="slide">
 
                         <img
-                            src="./src/assets/slide2.jpg"
+                            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1000&auto=format&fit=crop"
                             alt="Student Collaboration">
 
                         <div class="slide-caption">
@@ -131,7 +131,7 @@
                     <div class="slide">
 
                         <img
-                            src="./src/assets/slide3.jpg"
+                            src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1000&auto=format&fit=crop"
                             alt="Digital Dashboard">
 
                         <div class="slide-caption">
@@ -269,17 +269,41 @@
 
             </article>
 
-
         </div>
 
     </section>
-  <section id="auth">
-      <div id="auth-root"></div>
-  </section>
 
-    
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2026 RV University - School of Computer Science & Engineering. All Rights Reserved.</p>
+        <p>Campus Connect Portal | Full Stack Development Lab</p>
+    </footer>
+
     <script type="module" src="./src/main.jsx"></script>
+    <script>
+        // Carousel Functionality
+        const track = document.getElementById('carouselTrack');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const dots = document.querySelectorAll('.dot');
+        let currentSlide = 0;
+        const totalSlides = document.querySelectorAll('.slide').length;
 
+        function updateCarousel(index) {
+            currentSlide = (index + totalSlides) % totalSlides;
+            if (track) {
+                track.style.transform = `translateX(-${currentSlide * 100}%)`;
+            }
+            dots.forEach((dot, idx) => {
+                dot.classList.toggle('active-dot', idx === currentSlide);
+            });
+        }
+
+        if (prevBtn) prevBtn.addEventListener('click', () => updateCarousel(currentSlide - 1));
+        if (nextBtn) nextBtn.addEventListener('click', () => updateCarousel(currentSlide + 1));
+        dots.forEach((dot, idx) => {
+            dot.addEventListener('click', () => updateCarousel(idx));
+        });
+    </script>
 </body>
-
 </html>
