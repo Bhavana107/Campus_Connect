@@ -3,7 +3,7 @@ import AuthModule from './components/AuthModule.jsx';
 import StudentPortal from './components/StudentPortal.jsx';
 
 export default function App() {
-  const [activeView, setActiveView] = useState('auth');
+  const [activeView, setActiveView] = useState('student');
   const [activeTab, setActiveTab] = useState('login');
 
   
@@ -50,7 +50,14 @@ export default function App() {
         />
       )}
 
-      {activeView === 'student' && <StudentPortal />}
+      {activeView === 'student' && (
+        <StudentPortal
+          onBackToHome={() => {
+            setActiveView('auth');
+            window.location.hash = '#login';
+          }}
+        />
+      )}
     </>
   );
 }
