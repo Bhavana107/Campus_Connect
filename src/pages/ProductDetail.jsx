@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { initialProducts } from "../data/product";
 
-import { ShoppingCart, ChevronLeft, Tag, Zap } from "lucide-react";
+import { Heart, ShoppingCart, ChevronLeft, Tag, Zap } from "lucide-react";
 
 import { useCart } from "../context/CartContext";
 
@@ -12,7 +12,8 @@ const ProductDetail = () => {
   const { id } = useParams();
   const [product, setproduct] = useState();
 
-  const { addToCart } = useCart();
+  const { addToCart, toggleWishlist, isInWishlist } = useCart();
+  const saved = product ? isInWishlist(product.id) : false;
 
   useEffect(() => {
     setproduct(initialProducts.find((data) => data.id == id));
@@ -45,6 +46,17 @@ const ProductDetail = () => {
                 {product?.name}
               </h1>
             </div>
+
+            <button
+              type="button"
+              className={`wishlist-button detail ${saved ? "active" : ""}`}
+              onClick={() => toggleWishlist(product)}
+              aria-label={saved ? "Remove from wishlist" : "Add to wishlist"}
+            >
+              <Heart className={`w-5 h-5 ${saved ? "fill-current" : ""}`} />
+              <span>{saved ? "Saved" : "Save to Wishlist"}</span>
+            </button>
+
             <p className="text-3xl font-extrabold text-orange-400 mb-4">
               ₹{product?.price.toFixed(2)}
             </p>

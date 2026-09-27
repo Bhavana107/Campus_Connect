@@ -1,15 +1,29 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { ShoppingCart } from "lucide-react";
+import { Heart, ShoppingCart } from "lucide-react";
 
 import { useCart } from "../context/CartContext";
 
 const ProductCard = ({ product }) => {
-  const { addToCart } = useCart();
+  const { addToCart, toggleWishlist, isInWishlist } = useCart();
+  const saved = isInWishlist(product.id);
+
   return (
     <>
-      <div className="bg-gray-900 rounded-2xl shadow-xl overflow-hidden flex flex-col h-full transition duration-500 transform border border-gray-800 group hover:scale-[1.03] hover:shadow-orange-900/40">
+      <div className="bg-gray-900 rounded-2xl shadow-xl overflow-hidden flex flex-col h-full transition duration-500 transform border border-gray-800 group hover:scale-[1.03] hover:shadow-orange-900/40 relative">
+        <button
+          type="button"
+          className={`wishlist-button ${saved ? "active" : ""}`}
+          onClick={(e) => {
+            e.preventDefault();
+            toggleWishlist(product);
+          }}
+          aria-label={saved ? "Remove from wishlist" : "Add to wishlist"}
+        >
+          <Heart className={`w-5 h-5 ${saved ? "fill-current" : ""}`} />
+        </button>
+
         <Link
           to={`/product/${product.id}`}
           className="relative cursor-pointer overflow-hidden"
@@ -41,8 +55,9 @@ const ProductCard = ({ product }) => {
           </div>
 
           <button
-          onClick={()=>addToCart(product)}
-           className="max-auto w-full py-3 bg-orange-600 text-white font-bold rounded-full shadow-lg shadow-orange-800/50 cursor-pointer hover:bg-orange-700 transition duration-300 flex items-center justify-center space-x-2 transform hover:ring-4 hover:ring-pink-600/50 uppercase tracking-wider">
+            onClick={() => addToCart(product)}
+            className="max-auto w-full py-3 bg-orange-600 text-white font-bold rounded-full shadow-lg shadow-orange-800/50 cursor-pointer hover:bg-orange-700 transition duration-300 flex items-center justify-center space-x-2 transform hover:ring-4 hover:ring-pink-600/50 uppercase tracking-wider"
+          >
             <ShoppingCart className="w-5 h-5" />
             <span>Add to Cart</span>
           </button>

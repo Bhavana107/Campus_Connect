@@ -8,6 +8,7 @@ import { initialProducts } from "../data/product";
 
 export const CartProvider = (props) => {
   const [cart, setCart] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
 
   const products = initialProducts;
 
@@ -70,10 +71,39 @@ export const CartProvider = (props) => {
 
   const clearCart = () => setCart([]);
 
+  const addToWishlist = (product) => {
+    setWishlist((prevWishlist) => {
+      const alreadySaved = prevWishlist.some((item) => item.id === product.id);
+      if (alreadySaved) return prevWishlist;
+      return [...prevWishlist, product];
+    });
+  };
+
+  const removeFromWishlist = (productId) => {
+    setWishlist((prevWishlist) =>
+      prevWishlist.filter((item) => item.id !== productId)
+    );
+  };
+
+  const toggleWishlist = (product) => {
+    const alreadySaved = wishlist.some((item) => item.id === product.id);
+
+    if (alreadySaved) {
+      removeFromWishlist(product.id);
+    } else {
+      addToWishlist(product);
+    }
+  };
+
+  const isInWishlist = (productId) =>
+    wishlist.some((item) => item.id === productId);
+
   const cartCount = useMemo(
     () => cart.reduce((total, item) => total + item.quantity, 0),
     [cart]
   );
+
+  const wishlistCount = useMemo(() => wishlist.length, [wishlist]);
 
   const cartTotal = useMemo(
     () => cart.reduce((total, item) => total + item.price * item.quantity, 0),
@@ -87,11 +117,17 @@ export const CartProvider = (props) => {
       value={{
         products,
         cart,
+        wishlist,
         clearCart,
         addToCart,
         removeFromCart,
+        addToWishlist,
+        removeFromWishlist,
+        toggleWishlist,
+        isInWishlist,
         cartTotal,
         cartCount,
+        wishlistCount,
       }}
     >
       {props.children}

@@ -3,7 +3,7 @@ export const initialProducts = [
   // Realistic Image URLs for Phone (Dark)
   {
     id: 101,
-    name: "MackBook Air - M4 Black",
+    name: "Mac Book Air - M4 Black",
     price: 119990,
     image: "https://m.media-amazon.com/images/I/71CjP9jmqZL._SL1500_.jpg",
     description:
@@ -13,7 +13,7 @@ export const initialProducts = [
   // Realistic Image URLs for Laptop (Silver)
   {
     id: 102,
-    name: "MackBook Air - M4 Golden",
+    name: "Mac Book Air - M4 Golden",
     price: 119990,
     image: "https://m.media-amazon.com/images/I/71XIkqkx+KL._SL1500_.jpg",
     description:
