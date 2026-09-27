@@ -3,6 +3,7 @@ import SearchFilter from "../components/SearchFilter";
 import CategoryFilter from "../components/CategoryFilter";
 import PriceFilter from "../components/PriceFilter";
 import ProductCard from "../components/ProductCard";
+import ClassInfoBox from "../components/ClassInfoBox";
 
 import { useCart } from "../context/CartContext";
 
@@ -46,7 +47,7 @@ const ProductList = () => {
 
   return (
     <>
-      <div className="container mx-auto px-4 pt-8 md:px-8">
+      <div className="page-shell">
         <SearchFilter searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         <CategoryFilter
           selectedCategory={selectedCategory}
@@ -54,8 +55,13 @@ const ProductList = () => {
         />
         <PriceFilter priceRange={priceRange} setPriceRange={setPriceRange} />
 
-        <div className="mb-6 flex flex-col gap-3 px-1 sm:flex-row sm:items-center sm:justify-between">
-          <h2 className="text-2xl font-extrabold text-white">
+        <ClassInfoBox
+          title="Smart Shopping"
+          message="Browse by category, filter by budget, and save favorite products to your wishlist before checkout."
+        />
+
+        <div className="product-topbar">
+          <h2 className="section-title">
             Featured Gear ({filterProducts.length} Items)
           </h2>
 
@@ -63,7 +69,7 @@ const ProductList = () => {
             <button
               type="button"
               onClick={clearAllFilters}
-              className="w-fit rounded-full border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-semibold text-gray-200 transition hover:border-orange-500 hover:text-orange-400"
+              className="clear-button"
             >
               Clear filters
             </button>
@@ -71,14 +77,14 @@ const ProductList = () => {
         </div>
 
         {filterProducts.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-gray-700 bg-gray-900 p-10 text-center shadow-xl">
-            <p className="text-xl font-bold text-white">No products match these filters.</p>
-            <p className="mt-2 text-sm text-gray-400">
+          <div className="empty-state">
+            <p className="empty-state-title">No products match these filters.</p>
+            <p className="empty-state-text">
               Try adjusting your search, category, or price range.
             </p>
           </div>
         ) : (
-          <div className="mt-5 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="product-grid">
             {filterProducts.map((product, index) => (
               <ProductCard key={index} product={product} />
             ))}

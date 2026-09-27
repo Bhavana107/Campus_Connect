@@ -28,7 +28,7 @@ const App = () => {
           theme="dark"
           transition={Bounce}
         />
-        <div className="min-h-screen bg-gray-950 font-sans">
+        <div className="app-shell">
           <Navbar />
           <Routes>
             <Route path="/" element={<ProductList />} />

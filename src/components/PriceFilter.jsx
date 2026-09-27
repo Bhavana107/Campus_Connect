@@ -12,25 +12,21 @@ const priceOptions = [
 
 const PriceFilter = ({ priceRange, setPriceRange }) => {
   return (
-    <div className="mb-6 rounded-2xl border border-gray-800 bg-gray-900 p-4 shadow-xl sm:p-5">
-      <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-        <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-[0.12em] text-gray-300">
-          <IndianRupee className="h-4 w-4 text-orange-500" />
+    <div className="price-filter">
+      <div className="price-filter-row">
+        <div className="price-filter-title">
+          <IndianRupee className="filter-tag-icon" />
           <span>Filter by price</span>
         </div>
 
-        <div className="flex flex-wrap gap-2">
+        <div className="filter-group">
           {priceOptions.map((option) => (
             <button
               key={option.value}
               type="button"
               aria-pressed={priceRange === option.value}
               onClick={() => setPriceRange(option.value)}
-              className={`rounded-full px-4 py-2 text-sm font-semibold transition duration-200 ${
-                priceRange === option.value
-                  ? "bg-orange-600 text-white shadow-lg shadow-orange-800/40"
-                  : "border border-gray-700 bg-gray-800 text-gray-300 hover:border-orange-500 hover:text-orange-400"
-              }`}
+              className={`filter-chip ${priceRange === option.value ? "active" : ""}`}
             >
               {option.label}
             </button>

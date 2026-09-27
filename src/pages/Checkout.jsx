@@ -35,24 +35,19 @@ const Checkout = () => {
 
   return (
     <>
-      <div className="container mx-auto px-4 md:px-8 pt-8">
-        <h2 className="text-5xl font-extrabold text-white mb-10 tracking-tight">
-          Finalize Order
-        </h2>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-          <div className="lg:col-span-2 p-8 bg-gray-900 rounded-2xl shadow-2xl border border-gray-800">
-            <h3 className="text-3xl font-bold text-orange-400 mb-6 flex items-center space-x-3 border-b border-gray-700 pb-4">
-              <MapPin className="w-7 h-7 text-orange-500" />
+      <div className="page-shell">
+        <h2 className="page-heading large">Finalize Order</h2>
+        <div className="checkout-layout">
+          <div className="checkout-panel">
+            <h3 className="checkout-panel-title">
+              <MapPin className="detail-icon" />
               <span>Shipping Information</span>
             </h3>
 
-            <form className="space-y-6" onSubmit={handleSumbit}>
+            <form className="checkout-form" onSubmit={handleSumbit}>
               {Object.keys(deliveryDetails).map((key) => (
                 <div key={key}>
-                  <label
-                    htmlFor={key}
-                    className="block text-sm font-semibold text-gray-300 capitalize mb-1"
-                  >
+                  <label htmlFor={key} className="field-label">
                     {key === "zip" ? "Pin Code " : key}
                   </label>
                   <input
@@ -62,67 +57,47 @@ const Checkout = () => {
                     value={deliveryDetails[key]}
                     onChange={handleChange}
                     required
-                    className="mt-1 block w-full px-5 py-3 border border-gray-700 rounded-xl shadow-inner text-white bg-gray-800 placeholder-gray-500"
+                    className="field-input"
                   />
                 </div>
               ))}
 
-              <div className="pt-6">
-                <button
-                  type="submit"
-                  className="w-full py-4 bg-orange-600 text-white font-extrabold text-xl rounded-full shadow-lg shadow-orange-800/50 cursor-pointer hover:bg-orange-700 transition duration-300 flex items-center justify-center space-x-2 transform hover:ring-4 hover:ring-pink-600/50 uppercase tracking-wider"
-                >
-                  {/* <Zap className="w-6 h-6" /> */}
+              <div className="checkout-submit-wrap">
+                <button type="submit" className="primary-button checkout-submit">
                   <span>₹ Pay and Confirm Order (₹{cartTotal.toFixed(2)})</span>
                 </button>
               </div>
             </form>
           </div>
 
-          {/* Order Summary in Checkout */}
-          <div className="lg:col-span-1 p-8 bg-gray-900 rounded-2xl shadow-2xl border-1-4 sticky top-20 h-fit border border-gray-800">
-            <h3 className="text-3xl font-bold text-white mb-5 border-b border-y-gray-700 pb-3 flex items-center space-x-2">
-              <Package className="w-6 h-6 text-orange-400" />
-
+          <div className="summary-card checkout-summary">
+            <h3 className="summary-title">
+              <Package className="detail-icon" />
               <span>Summary</span>
             </h3>
-            <div className="space-y-4 text-gray-400">
+            <div className="summary-body">
               {cart.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex justify-between text-base border-b border-gray-800 pb-2"
-                >
-                  <span className="trucate text-gray-300">{item.name}</span>
-                  <span className="font-medium text-orange-300">
+                <div key={item.id} className="summary-item-row">
+                  <span className="summary-item-name">{item.name}</span>
+                  <span className="summary-item-total">
                     ₹{(item.price * item.quantity).toFixed(2)}
                   </span>
                 </div>
               ))}
 
-              <div className="space-y-4 text-gray-400">
-                <div className="flex justify-between text-xl">
-                  <span>SubTotal :</span>
-                  <span className="font-semibold text-white">
-                    ₹{cartTotal.toFixed(2)}
-                  </span>
-                </div>
-                <div className="flex justify-between text-xl">
-                  <span>Shipping (Express):</span>
-                  <span className="font-semibold text-green-400">Free</span>
-                </div>
-                <div className="flex justify-between pt-6 border-t border-gray-700">
-                  <span className="text-2xl font-extrabold text-white">
-                     Total Due:
-                  </span>
-                  <span className="text-3xl font-extrabold text-orange-400">
-                    ₹{cartTotal.toFixed(2)}
-                  </span>
-                </div>
+              <div className="summary-row">
+                <span>SubTotal :</span>
+                <span className="summary-value">₹{cartTotal.toFixed(2)}</span>
+              </div>
+              <div className="summary-row">
+                <span>Shipping (Express):</span>
+                <span className="summary-shipping">Free</span>
+              </div>
+              <div className="summary-total-row">
+                <span>Total Due:</span>
+                <span className="summary-total">₹{cartTotal.toFixed(2)}</span>
               </div>
             </div>
-          
-
-          
           </div>
         </div>
       </div>
