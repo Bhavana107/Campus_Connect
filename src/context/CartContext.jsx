@@ -1,6 +1,6 @@
 import { ToastContainer, toast,Bounce } from "react-toastify";
 
-import { createContext, useContext, useState, useMemo } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 const CartContext = createContext();
 
@@ -9,8 +9,17 @@ import { initialProducts } from "../data/product";
 export const CartProvider = (props) => {
   const [cart, setCart] = useState([]);
   const [wishlist, setWishlist] = useState([]);
+  const [products, setProducts] = useState(initialProducts);
 
-  const products = initialProducts;
+  useEffect(() => {
+    fetch("/api/products")
+      .then((response) => {
+        if (!response.ok) throw new Error("Unable to load products");
+        return response.json();
+      })
+      .then(setProducts)
+      .catch(() => setProducts(initialProducts));
+  }, []);
 
   // Add item into the cart
   const addToCart = (product) => {
