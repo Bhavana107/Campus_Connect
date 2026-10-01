@@ -20,11 +20,11 @@ function showSlide(index) {
     });
 }
 
-nextBtn.addEventListener('click', () => {
+nextBtn?.addEventListener('click', () => {
     showSlide(currentIndex + 1);
 });
 
-prevBtn.addEventListener('click', () => {
+prevBtn?.addEventListener('click', () => {
     showSlide(currentIndex - 1);
 });
 
@@ -32,4 +32,16 @@ dots.forEach((dot) => {
     dot.addEventListener('click', () => {
         showSlide(Number(dot.dataset.index));
     });
+});
+
+document.querySelector('.student-bg')?.addEventListener('click', () => {
+    window.location.hash = '#student';
+});
+
+document.querySelector('.faculty-bg')?.addEventListener('click', () => {
+    window.location.hash = '#faculty';
+});
+
+document.querySelector('.admin-bg')?.addEventListener('click', () => {
+    window.location.hash = '#admin';
 });

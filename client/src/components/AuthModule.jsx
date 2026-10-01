@@ -1,9 +1,9 @@
-import React from 'react';
+import { useState } from 'react';
 
 export default function AuthModule({ initialMode = 'login' }) {
-  const [isLogin, setIsLogin] = React.useState(initialMode === 'login');
+  const [isLogin, setIsLogin] = useState(initialMode === 'login');
 
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: ''
@@ -22,7 +22,9 @@ export default function AuthModule({ initialMode = 'login' }) {
     if (isLogin) {
       alert(`Logging in with: ${formData.email}`);
     } else {
-      alert(`New Student Registered: ${formData.name}`);
+      alert(
+        `RVU Student Registered: ${formData.name} (${formData.email})`
+      );
     }
   };
 
@@ -39,6 +41,7 @@ export default function AuthModule({ initialMode = 'login' }) {
 
       <div style={styles.tabContainer}>
         <button
+          type="button"
           style={isLogin ? styles.activeTab : styles.inactiveTab}
           onClick={() => setIsLogin(true)}
         >
@@ -46,6 +49,7 @@ export default function AuthModule({ initialMode = 'login' }) {
         </button>
 
         <button
+          type="button"
           style={!isLogin ? styles.activeTab : styles.inactiveTab}
           onClick={() => setIsLogin(false)}
         >
