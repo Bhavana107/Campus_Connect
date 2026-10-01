@@ -5,6 +5,7 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import ProductDetail from "./pages/ProductDetail";
 import Wishlist from "./pages/Wishlist";
+import Login from "./pages/Login";
 import Footer from "./components/Footer";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -32,6 +33,7 @@ const App = () => {
           <Navbar />
           <Routes>
             <Route path="/" element={<ProductList />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/cart" element={<Cart />} />

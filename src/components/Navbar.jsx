@@ -20,6 +20,10 @@ const Navbar = () => {
           </Link>
 
           <nav className="nav-actions">
+            <Link to="/login" className="login-link">
+              Login
+            </Link>
+
             <Link to="/wishlist" className="wishlist-link" aria-label="Wishlist">
               <Heart className="nav-icon" />
               {wishlistCount > 0 && (
