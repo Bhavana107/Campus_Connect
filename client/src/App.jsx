@@ -3,10 +3,9 @@ import AuthModule from './components/AuthModule.jsx';
 import StudentPortal from './components/StudentPortal.jsx';
 
 export default function App() {
-  const [activeView, setActiveView] = useState('student');
+  const [activeView, setActiveView] = useState('auth');
   const [activeTab, setActiveTab] = useState('login');
 
-  
   const scrollToAuth = () => {
     setTimeout(() => {
       document.getElementById('auth')?.scrollIntoView({
@@ -42,7 +41,7 @@ export default function App() {
   }, []);
 
   return (
-    <>
+    <div style={{ padding: '20px' }}>
       {activeView === 'auth' && (
         <AuthModule
           activeTab={activeTab}
@@ -53,11 +52,11 @@ export default function App() {
       {activeView === 'student' && (
         <StudentPortal
           onBackToHome={() => {
-            setActiveView('auth');
-            window.location.hash = '#login';
+            window.location.hash = '';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
         />
       )}
-    </>
+    </div>
   );
 }

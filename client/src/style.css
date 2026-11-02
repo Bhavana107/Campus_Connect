@@ -19,6 +19,7 @@ body {
   color: #300003;
 }
 
+
 /* Navbar */
 
 .navbar {
@@ -385,6 +386,141 @@ body {
 }
 
 /* Footer */
+.dashboard-section {
+  background: linear-gradient(180deg, #f8fafc 0%, #edf6f1 100%);
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 14px;
+  padding: 1.4rem 1.1rem;
+  box-shadow: 0 8px 20px rgba(13, 92, 58, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 4px solid var(--primary-green);
+}
+
+.success-card {
+  border-top-color: #1f9d55;
+}
+
+.warning-card {
+  border-top-color: #f0ad4e;
+}
+
+.info-card {
+  border-top-color: #0d6efd;
+}
+
+.stat-label {
+  font-size: 0.82rem;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.stat-value {
+  font-size: 2rem;
+  color: var(--primary-green);
+  line-height: 1;
+}
+
+.stat-card small {
+  color: #64748b;
+}
+
+.table-card {
+  background: white;
+  border-radius: 14px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+}
+
+.portal-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.portal-table thead {
+  background: #0A2240;
+  color: white;
+}
+
+.portal-table th,
+.portal-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.portal-table tbody tr:nth-child(even) {
+  background: #f8fafc;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.38rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.status-badge.success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge.info {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.student-preview-section {
+  background: linear-gradient(180deg, #f8fafc 0%, #eefaf5 100%);
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.student-preview-box {
+  max-width: 760px;
+  margin: 0 auto;
+  background: white;
+  border: 1px solid #dfe8df;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(13, 92, 58, 0.08);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  text-align: left;
+}
+
+.student-preview-copy p {
+  margin-bottom: 0.75rem;
+  color: #0d5c3a;
+  font-size: 1rem;
+}
+
+.student-preview-btn {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  max-width: 280px;
+}
+
 .footer {
   background-color: #0A2240;
   color: #ffffff;
@@ -399,4 +535,141 @@ body {
   color: #F2A900;
   font-size: 0.8rem;
   margin-top: 4px;
+}
+
+/* ========================================================== */
+/* Experiment 3: Interactive DOM Board Styles                 */
+/* ========================================================== */
+
+.interactive-card {
+  background: white;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  margin-top: 1.5rem;
+  border-left: 6px solid var(--primary-green);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.interactive-card.dark-card-theme {
+  background: #1e293b;
+  color: #f8fafc;
+  border-left-color: #F2A900;
+}
+
+.controls-group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.dom-input {
+  flex: 1;
+  min-width: 250px;
+  padding: 10px 14px;
+  border: 2px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.dom-input:focus {
+  border-color: var(--primary-green);
+}
+
+.live-preview-box {
+  background: #f1f5f9;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-left: 4px solid #0284c7;
+}
+
+.dark-card-theme .live-preview-box {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+.preview-label {
+  font-weight: bold;
+  color: #475569;
+}
+
+.dark-card-theme .preview-label {
+  color: #94a3b8;
+}
+
+.preview-text {
+  color: #0d5c3a;
+  font-style: italic;
+  font-weight: 600;
+}
+
+.dark-card-theme .preview-text {
+  color: #38bdf8;
+}
+
+.dynamic-item-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dynamic-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.dark-card-theme .dynamic-list-item {
+  background: #334155;
+  border-color: #475569;
+}
+
+.dynamic-list-item:hover {
+  background: #f1f5f9;
+  transform: translateX(4px);
+}
+
+.dark-card-theme .dynamic-list-item:hover {
+  background: #3b4d66;
+}
+
+.item-text-content {
+  font-size: 0.95rem;
+  cursor: pointer;
+  flex: 1;
+}
+
+.item-text-content.text-completed {
+  text-decoration: line-through;
+  color: #94a3b8;
+}
+
+.btn-delete-item {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-delete-item:hover {
+  background: #dc2626;
 }

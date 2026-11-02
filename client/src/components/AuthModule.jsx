@@ -1,6 +1,8 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function AuthModule({ activeTab, setActiveTab, initialMode = 'login' }) {
+  const navigate = useNavigate();
   const [internalMode, setInternalMode] = React.useState(
     activeTab ? activeTab === 'login' : initialMode === 'login'
   );
@@ -38,7 +40,7 @@ export default function AuthModule({ activeTab, setActiveTab, initialMode = 'log
 
     if (isLogin) {
       alert(`Logging in with: ${formData.email}`);
-      window.location.hash = '#student';
+      navigate('/student');
     } else {
       alert(`New Student Registered: ${formData.name}`);
       setLoginMode(true);

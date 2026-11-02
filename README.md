@@ -1,55 +1,50 @@
 # 🎓 Campus Connect Portal
-
-> **RV University**  
-> *Repository:* [MedhaSrinath/Campus-connect](https://github.com/MedhaSrinath/Campus-connect)
-
----
-
 ## 📌 Project Overview
 
-**Campus Connect** is an integrated academic management portal designed to connect students, faculty, and administrators onto a single digital platform. The project provides a modern web interface for viewing university highlights, accessing dedicated role portals, managing schedules and notices in real time, and tracking academic attendance.
+**Campus Connect** is an integrated academic portal designed to connect students, faculty, and administrators onto a single digital platform. The project demonstrates progressive full-stack web development principles ranging from semantic HTML5 structure, responsive CSS3 styling, and client-side JavaScript DOM manipulation to state-driven architectures and Node.js/Express backend APIs.
 
 ---
 
 ## 🚀 Key Features
 
 ### 1. Modern Responsive Landing Page (`client/index.html`)
-- **Semantic HTML5 Structure**: Structured with `<header>`, `<nav>`, `<section>`, `<article>`, and `<footer>` elements.
+- **Semantic HTML5 Architecture**: Structured with `<header>`, `<nav>`, `<section>`, `<article>`, and `<footer>` elements.
 - **Layouts with CSS Grid & Flexbox**:
-  - Flexbox-driven navigation header, brand badges, and action buttons.
-  - Responsive multi-column CSS Grid for user portals (`Student Portal`, `Faculty Portal`, `Admin Portal`).
-- **Campus Life Carousel**: Interactive image carousel showcasing RV University campus infrastructure and digital learning with smooth navigation controls and indicator dots.
-- **Micro-Interactions**: Hover elevation effects (`transform: translateY(-8px)` and drop-shadows) on portal cards and buttons.
-- **Mobile Responsiveness**: Adaptive media queries ensuring an optimal experience on mobile, tablet, and desktop screens.
+  - Flexbox-driven navigation bar, logo grouping, and control groups.
+  - Multi-column CSS Grid for role cards (`Student Portal`, `Faculty Portal`, `Admin Portal`) adapting automatically across viewport widths.
+- **Campus Life Carousel**: Smooth image slider featuring authentic RV University campus visuals with next/previous controls and indicator dots.
+- **Micro-Interactions**: Hover animations (`transform: translateY(-8px)` and elevated drop-shadows) on role cards and interactive buttons.
+- **Mobile Responsiveness**: Adaptive media queries (`@media (max-width: 768px)` and `@media (max-width: 480px)`) ensuring seamless rendering on mobile devices.
 
 ### 2. Student Authentication System (`client/login.html`)
-- Dedicated RV University branded login & registration portal.
-- Tab-switching interface between **Student Login** and **Student Registration**.
-- Interactive notifications upon successful registration and login.
-- Direct redirection to student dashboard features.
+- Dedicated RV University branded login & registration interface.
+- Tab-switching between **Student Login** and **Student Registration**.
+- Native browser pop-up confirmations upon successful account creation and sign-in.
+- Pre-filled credential transitions and seamless navigation to the performance portal.
 
 ### 3. Student Performance & Attendance Portal (`client/attendance.html`)
-- **Student Profile Summary**: Structured rendering of student academic details and enrollment status.
-- **Batch Grade Evaluator**: Automated mark processing and grade calculation.
-- **Interactive Attendance Tracker**: Real-time counter functionality for tracking lecture presence.
-- **Announcement Dialogs**: Interactive notification and prompt boxes.
+- **Task 1: Student Summary**: Variables, operators, and structured data rendering into the DOM.
+- **Task 2: Batch Grade Evaluator**: Control flow (loops & switch statements) evaluating student scores.
+- **Task 3: Attendance Counter**: Closure and arrow function maintaining a private counter incremented via button click.
+- **Task 4: Quick Alerts & Dialogs**: Native alert, confirm, and prompt interactions.
 
 ### 4. Interactive Notice & Task Board (`client/experiment3.html`)
-- **Real-Time Input Reflection**: Live preview responding instantly to user typing without page refresh.
-- **Dynamic Content Management**: Add announcements and tasks dynamically to the active list.
-- **Task Actions**: Remove items and toggle completed status.
-- **Dark Mode Toggle**: Instant theme switching between light and dark modes.
+- **Real-Time Input Reflection**: Listens to the `input` event to project user typing dynamically without reloading.
+- **Dynamic DOM Creation**: Generates and appends new list items via `document.createElement()` and `appendChild()`.
+- **Dynamic Deletion & Style Toggling**: Removes items using `.remove()` and toggles task completion lines.
+- **Theme Toggling**: Uses `classList.toggle('dark-theme')` to switch between light and dark modes.
 
-### 5. Study & Task Planner (`client/experiment4.html`)
-- **State-Driven Architecture**: User interface automatically updates to reflect application state changes.
-- **Task Filtering & Priorities**: Filter tasks by status (`All`, `Pending`, `Completed`) with priority tags (`High`, `Medium`, `Low`).
-- **Local Persistence**: Automatically saves tasks to `localStorage` so data remains available across browser sessions.
+### 5. State-Driven Task & Study Planner (`client/experiment4.html`)
+- **Predictable State Architecture**: Driven by a single state source of truth (`UI = f(state)`).
+- **Reactive Render Cycle**: User actions mutate state first, immediately triggering a full interface re-draw.
+- **Task Filtering & Priority Badges**: Filter between `All`, `Pending`, and `Completed` tasks with color-coded priority indicators (High, Medium, Low).
+- **State Persistence**: Preserves data across browser reloads using `localStorage`.
 
 ### 6. Backend API Server (`server/`)
-- Built with **Node.js** and **Express**.
-- Modular routing architecture with authentication endpoints.
-- MongoDB and Mongoose integration for data persistence.
-- CORS-enabled for secure communication with the frontend client.
+- Built with **Node.js** and **Express 5**.
+- Modular routing architecture with `/api/auth` endpoints.
+- MongoDB and Mongoose integration for user and session management.
+- CORS configuration enabling seamless communication with the client.
 
 ---
 
@@ -58,8 +53,8 @@
 | Domain | Technologies |
 | :--- | :--- |
 | **Frontend** | HTML5, CSS3, JavaScript (ES6+), React 19, Vite |
-| **Backend** | Node.js, Express.js, CORS, Dotenv |
-| **Database & Auth** | MongoDB, Mongoose, JWT, bcryptjs |
+| **Backend** | Node.js, Express.js 5, CORS, Dotenv |
+| **Database & Auth** | MongoDB, Mongoose 9, JWT, bcryptjs |
 | **Version Control** | Git, GitHub |
 
 ---
@@ -69,36 +64,46 @@
 ```text
 Campus_Connect/
 ├── README.md                      # Project documentation
-├── package.json                   # Root project configuration
+├── package.json                   # Root configuration
 ├── client/                        # Client-side web application
 │   ├── index.html                 # Main Campus Connect portal landing page
 │   ├── login.html                 # Student login & registration portal
 │   ├── attendance.html            # Student performance & attendance dashboard
-│   ├── experiment3.html           # Interactive notice & task board
-│   ├── experiment3.js             # External script for notice board
+│   ├── experiment3.html           # DOM manipulation & events demonstration
+│   ├── experiment3.js             # External script for Experiment 3
 │   ├── experiment4.html           # State-driven task & study planner
-│   ├── experiment4.js             # State management & render engine for task planner
-│   ├── package.json               # Client dependencies
+│   ├── experiment4.js             # State management & render engine for Experiment 4
+│   ├── package.json               # Client dependencies (React, Vite, Axios)
 │   ├── src/
-│   │   ├── style.css              # Main external stylesheet
+│   │   ├── style.css              # Main external stylesheet (Grid, Flex, Media queries)
 │   │   ├── main.jsx               # React entry point
-│   │   ├── App.jsx                # Core application component
-│   │   ├── assets/                # Images & media assets
+│   │   ├── App.jsx                # Core React router component
+│   │   ├── assets/                # Images & SVGs (rvu_campus.png, slide1.jpg)
 │   │   └── components/
-│   │       ├── AuthModule.jsx     # Authentication component
+│   │       ├── AuthModule.jsx     # React authentication component
 │   │       └── StudentPortal.jsx  # Student dashboard view
 │   └── public/                    # Static assets & icons
 └── server/                        # Backend REST API
-    ├── package.json               # Server dependencies
+    ├── package.json               # Server dependencies (Express, Mongoose, JWT)
     └── src/
-        ├── app.js                 # Express server configuration
+        ├── app.js                 # Express server configuration & route mounting
         ├── config/
-        │   └── db.js              # Database connection handler
+        │   └── db.js              # MongoDB database connection handler
         ├── models/
-        │   └── User.js            # User data model
+        │   └── User.js            # User data model & schema
         └── routes/
-            └── authRoutes.js      # Authentication endpoints
+            └── authRoutes.js      # Authentication endpoints (/api/auth)
 ```
+
+---
+
+## 🧪 Laboratory Experiments Mapping
+
+| Experiment | Title | Implementation |
+| :--- | :--- | :--- |
+| **Experiment 2** | Responsive Web Pages with HTML5 & CSS3 | [`client/index.html`](client/index.html) & [`client/src/style.css`](client/src/style.css) |
+| **Experiment 3** | DOM Manipulation, Events & Dynamic Content | [`client/experiment3.html`](client/experiment3.html) & [`client/experiment3.js`](client/experiment3.js) |
+| **Experiment 4** | State Handling & Version Control | [`client/experiment4.html`](client/experiment4.html) & [`client/experiment4.js`](client/experiment4.js) |
 
 ---
 
@@ -114,10 +119,10 @@ cd Campus-connect
 You can open any of the HTML pages directly in your browser or with VS Code **Live Server**:
 - **Home Page**: `client/index.html`
 - **Login Portal**: `client/login.html`
-- **Notice Board**: `client/experiment3.html`
-- **Task Planner**: `client/experiment4.html`
+- **Experiment 3**: `client/experiment3.html`
+- **Experiment 4**: `client/experiment4.html`
 
-Alternatively, run the development server:
+Alternatively, launch the Vite development server:
 ```bash
 cd client
 npm install
@@ -136,4 +141,5 @@ The server will start on `http://localhost:5000`.
 
 ## 📝 License
 
-This project is licensed under the **ISC License**.
+This project is developed as part of the **CS3301 Full Stack Development** curriculum at **RV University**.
+
