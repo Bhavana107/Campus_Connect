@@ -1,62 +1,45 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import AuthModule from './components/AuthModule.jsx';
 import StudentPortal from './components/StudentPortal.jsx';
 
 export default function App() {
-  const [activeView, setActiveView] = useState('auth');
-  const [activeTab, setActiveTab] = useState('login');
-
-  const scrollToAuth = () => {
-    setTimeout(() => {
-      document.getElementById('auth')?.scrollIntoView({
-        behavior: 'smooth'
-      });
-    }, 100);
-  };
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash;
-
-      if (hash === '#login') {
-        setActiveView('auth');
-        setActiveTab('login');
-        scrollToAuth();
-      } else if (hash === '#register') {
-        setActiveView('auth');
-        setActiveTab('register');
-        scrollToAuth();
-      } else if (hash === '#student') {
-        setActiveView('student');
-        scrollToAuth();
-      }
-    };
-
-    window.addEventListener('hashchange', handleHashChange);
-    handleHashChange();
-
-    return () => {
-      window.removeEventListener('hashchange', handleHashChange);
-    };
-  }, []);
+    if (pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (pathname.startsWith('/student')) {
+      document.getElementById('student-portal')?.scrollIntoView({
+        behavior: 'smooth'
+      });
+    } else {
+      document.getElementById('auth-root')?.scrollIntoView({
+        behavior: 'smooth'
+      });
+    }
+  }, [pathname]);
 
   return (
-    <div style={{ padding: '20px' }}>
-      {activeView === 'auth' && (
-        <AuthModule
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
+    <div style={{ padding: '20px 0' }}>
+      <Routes>
+        <Route
+          path="/"
+          element={(
+            <>
+              <StudentPortal />
+              <AuthModule initialMode="login" />
+            </>
+          )}
         />
-      )}
-
-      {activeView === 'student' && (
-        <StudentPortal
-          onBackToHome={() => {
-            window.location.hash = '';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }}
+        <Route path="/login" element={<AuthModule initialMode="login" />} />
+        <Route path="/register" element={<AuthModule initialMode="register" />} />
+        <Route
+          path="/student/*"
+          element={<StudentPortal onBackToHome={() => navigate('/')} />}
         />
-      )}
+      </Routes>
     </div>
   );
 }

@@ -1,26 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function AuthModule({ activeTab, setActiveTab, initialMode = 'login' }) {
+export default function AuthModule({ initialMode = 'login' }) {
   const navigate = useNavigate();
-  const [internalMode, setInternalMode] = React.useState(
-    activeTab ? activeTab === 'login' : initialMode === 'login'
-  );
+  const [isLogin, setIsLogin] = React.useState(initialMode === 'login');
 
   React.useEffect(() => {
-    if (activeTab) {
-      setInternalMode(activeTab === 'login');
-    }
-  }, [activeTab]);
-
-  const isLogin = activeTab !== undefined ? activeTab === 'login' : internalMode;
-
-  const setLoginMode = (login) => {
-    setInternalMode(login);
-    if (setActiveTab) {
-      setActiveTab(login ? 'login' : 'register');
-    }
-  };
+    setIsLogin(initialMode === 'login');
+  }, [initialMode]);
 
   const [formData, setFormData] = React.useState({
     name: '',
@@ -40,10 +27,8 @@ export default function AuthModule({ activeTab, setActiveTab, initialMode = 'log
 
     if (isLogin) {
       alert(`Logging in with: ${formData.email}`);
-      navigate('/student');
     } else {
-      alert(`New Student Registered: ${formData.name}`);
-      setLoginMode(true);
+      alert(`RVU Student Registered: ${formData.name} (${formData.email})`);
     }
   };
 
@@ -60,15 +45,17 @@ export default function AuthModule({ activeTab, setActiveTab, initialMode = 'log
 
       <div style={styles.tabContainer}>
         <button
+          type="button"
           style={isLogin ? styles.activeTab : styles.inactiveTab}
-          onClick={() => setLoginMode(true)}
+          onClick={() => navigate('/login')}
         >
           Login
         </button>
 
         <button
+          type="button"
           style={!isLogin ? styles.activeTab : styles.inactiveTab}
-          onClick={() => setLoginMode(false)}
+          onClick={() => navigate('/register')}
         >
           Register
         </button>

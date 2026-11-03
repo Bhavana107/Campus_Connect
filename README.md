@@ -130,16 +130,21 @@ npm run dev
 ```
 
 ### 3. Run the Backend Server
+Copy `server/.env.example` to `server/.env`, then set `MONGO_URI` to your
+MongoDB connection string. For a local MongoDB server, the example URI is
+already provided. For MongoDB Atlas, use the connection string from your
+cluster and replace its username, password, and database name locally. Do not
+commit `server/.env` or share its connection string.
+
 ```bash
 cd server
 npm install
-node src/app.js
+npm run dev
 ```
-The server will start on `http://localhost:5000`.
+The server connects to MongoDB before starting on `http://localhost:5000`.
 
 ---
 
 ## 📝 License
 
 This project is developed as part of the **CS3301 Full Stack Development** curriculum at **RV University**.
-

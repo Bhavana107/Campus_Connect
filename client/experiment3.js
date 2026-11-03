@@ -41,7 +41,6 @@ userInput.addEventListener("input", (event) => {
     liveOutput.textContent = enteredText;
   }
 });
-
 // --------------------------------------------------------------------------
 // EVENT 2: Button Click Event (Add Item & Toggle Style)
 // --------------------------------------------------------------------------
@@ -52,7 +51,6 @@ addBtn.addEventListener("click", handleAddItem);
 toggleBtn.addEventListener("click", () => {
   mainContainer.classList.toggle("dark-theme");
 });
-
 // --------------------------------------------------------------------------
 // EVENT 3: Keyboard Event (Press 'Enter' to Add Item)
 // --------------------------------------------------------------------------
