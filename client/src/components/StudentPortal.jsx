@@ -1,167 +1,209 @@
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { getAssignments, submitAssignment as submitAssignmentRequest } from '../services/api.js';
+import { useState, useEffect } from 'react';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 
-const tabs = [
-  { id: 'notices', label: 'Notices & Events' },
-  { id: 'assignments', label: 'Assignments' },
-  { id: 'attendance', label: 'Track Attendance' },
-  { id: 'profile', label: 'Profile' }
-];
-
-const notices = [
-  { id: 1, title: 'Mid-Term Exam Schedule Released', date: 'Sept 10, 2026', department: 'SOCSE' },
-  { id: 2, title: 'Hackathon Registration Open', date: 'Sept 20, 2026', department: 'RVU Tech Club' }
-];
 
 export default function StudentPortal({ onBackToHome }) {
-  const [assignments, setAssignments] = useState([]);
-  const [activeTab, setActiveTab] = useState('notices');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [submittingId, setSubmittingId] = useState(null);
-  const location = useLocation();
+  // Hook for programmatic client-side navigation
   const navigate = useNavigate();
-  const isStudentRoute = location.pathname.startsWith('/student');
-  const routeTab = isStudentRoute ? location.pathname.split('/')[2] : null;
-  const selectedTab = tabs.some((tab) => tab.id === routeTab) ? routeTab : activeTab;
+  // Hook to read the current URL path for active styling
+  const location = useLocation();
+
+  const [assignments, setAssignments] = useState([]);
 
   useEffect(() => {
-    let isMounted = true;
-
-    getAssignments()
-      .then((data) => {
-        if (isMounted) setAssignments(data);
-      })
-      .catch((requestError) => {
-        if (isMounted) setError(requestError.message);
-      })
-      .finally(() => {
-        if (isMounted) setLoading(false);
-      });
-
-    return () => {
-      isMounted = false;
-    };
+    // Fetch assignments from the server when the component mounts
+    fetch('http://localhost:5000/api/assignments')
+      .then((res) => res.json())
+      .then((data) => setAssignments(data))
+      .catch((err) => console.error('Error fetching assignments:', err));
   }, []);
 
-  function selectTab(tabId) {
-    setActiveTab(tabId);
-    if (isStudentRoute) navigate(`/student/${tabId}`);
-  }
+  const notices = [
+    { id: 1, title: 'Mid-Term Exam Schedule Released', date: 'Sept 10, 2026', dept: 'SOCSE' },
+    { id: 2, title: 'Hackathon Registration Open', date: 'Sept 20, 2026', dept: 'RVU Tech Club' }
+  ];
 
-  async function handleAssignmentSubmit(id) {
-    setError('');
-    setSubmittingId(id);
 
-    try {
-      const updatedAssignment = await submitAssignmentRequest(id);
-      setAssignments((currentAssignments) => currentAssignments.map((assignment) => (
-        assignment.id === id ? updatedAssignment : assignment
-      )));
-    } catch (requestError) {
-      setError(requestError.message);
-    } finally {
-      setSubmittingId(null);
-    }
+  const handleAssignmentSubmit = (id) => {
+    fetch(`http://localhost:5000/api/assignments/${id}/submit`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' }
+    })
+      .then((res) => res.json())
+      .then((updatedAssignment) => {
+        setAssignments(
+          assignments.map((item) =>
+            item.id === id ? updatedAssignment : item
+          )
+        );
+      })
+      .catch((err) => console.error('Error submitting assignment:', err));
   }
 
   return (
-    <section className="portal-container" id="student-portal">
-      <header className="portal-header">
+    <div style={styles.container}>
+      {/* Header View */}
+      <header style={styles.header}>
         <div>
-          <h2>Student Portal View</h2>
-          <p>Welcome, RVU Student</p>
+          <h2 style={{ margin: 0, color: '#F2A900' }}>👨‍🎓 Student Portal View</h2>
+          <span style={{ fontSize: '13px', color: '#e0e0e0' }}>Welcome, RVU Student</span>
         </div>
-        {isStudentRoute && onBackToHome && (
-          <button className="portal-back-button" onClick={onBackToHome}>
-            Back to Main Campus View
-          </button>
-        )}
+        <button onClick={onBackToHome} style={styles.backBtn}>
+          ← Back to Main Campus View
+        </button>
       </header>
 
-      <nav className="portal-tabs" aria-label="Student portal sections">
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            className={`portal-tab${selectedTab === tab.id ? ' active' : ''}`}
-            onClick={() => selectTab(tab.id)}
-            aria-current={selectedTab === tab.id ? 'page' : undefined}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </nav>
 
-      <div className="portal-content">
-        {selectedTab === 'notices' && (
-          <section>
-            <h3>Campus Notices &amp; Events</h3>
-            <ul className="portal-list">
-              {notices.map((notice) => (
-                <li key={notice.id}>
-                  <div>
-                    <strong>{notice.title}</strong>
-                    <p>{notice.department} &bull; {notice.date}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
+      {/* STUDENT TASK 1: Navigate programmatically on button clicks using navigate() */}
+      <div style={styles.tabContainer}>
+        <button
+          onClick={() => navigate('/student/notices')}
+          style={location.pathname.includes('/notices') || location.pathname === '/student' ? styles.activeTab : styles.tab}
+        >
+          Notices & Events
+        </button>
 
-        {selectedTab === 'assignments' && (
-          <section>
-            <h3>Assignments &amp; Submissions</h3>
-            {error && <p className="assignment-error" role="alert">{error}</p>}
-            {loading ? (
-              <p>Loading assignments...</p>
-            ) : (
-              <ul className="portal-list">
-                {assignments.map((assignment) => (
-                  <li key={assignment.id}>
-                    <div>
-                      <strong>{assignment.title}</strong>
-                      <p>{assignment.subject} &bull; Due: {assignment.dueDate}</p>
-                    </div>
-                    {assignment.status === 'Submitted' ? (
-                      <span>Submitted</span>
-                    ) : (
-                      <button
-                        className="portal-action-button"
-                        onClick={() => handleAssignmentSubmit(assignment.id)}
-                        disabled={submittingId === assignment.id}
-                      >
-                        {submittingId === assignment.id ? 'Submitting...' : 'Submit Assignment'}
-                      </button>
-                    )}
-                  </li>
-                ))}
-                {assignments.length === 0 && <li>No assignments available.</li>}
-              </ul>
-            )}
-          </section>
-        )}
 
-        {selectedTab === 'attendance' && (
-          <section>
-            <h3>Attendance Tracker</h3>
-            <ul className="portal-list">
-              <li><strong>CS3301 - Full Stack</strong><span>88% Attendance</span></li>
-              <li><strong>CS3302 - DBMS</strong><span>92% Attendance</span></li>
-            </ul>
-          </section>
-        )}
+        <button
+          onClick={() => navigate('/student/assignments')}
+          style={location.pathname.includes('/assignments') ? styles.activeTab : styles.tab}
+        >
+          Assignments
+        </button>
 
-        {selectedTab === 'profile' && (
-          <section className="portal-profile">
-            <h3>Student Profile</h3>
-            <p><strong>Name:</strong> RVU Student</p>
-            <p><strong>Program:</strong> Computer Science</p>
-            <p><strong>Role:</strong> Student</p>
-          </section>
-        )}
+
+        <button
+          onClick={() => navigate('/student/attendance')}
+          style={location.pathname.includes('/attendance') ? styles.activeTab : styles.tab}
+        >
+          Track Attendance
+        </button>
+
+
+        <button
+          onClick={() => navigate('/student/profile')}
+          style={location.pathname.includes('/profile') ? styles.activeTab : styles.tab}
+        >
+          Profile
+        </button>
       </div>
-    </section>
+
+
+      {/* STUDENT TASK 2: Route rendering using <Routes> and <Route> */}
+      <div style={styles.contentCard}>
+        <Routes>
+          <Route path="/" element={<NoticesView notices={notices} />} />
+          <Route path="notices" element={<NoticesView notices={notices} />} />
+          <Route
+            path="assignments"
+            element={<AssignmentsView assignments={assignments} onSubmit={handleAssignmentSubmit} />}
+          />
+          <Route path="attendance" element={<AttendanceView />} />
+          <Route path="profile" element={<ProfileView />} />
+        </Routes>
+      </div>
+    </div>
   );
 }
+
+
+// Sub-views
+function NoticesView({ notices }) {
+  return (
+    <div>
+      <h3>📢 Campus Notices & Events</h3>
+      <ul style={styles.list}>
+        {notices.map((item) => (
+          <li key={item.id} style={styles.listItem}>
+            <div>
+              <strong>{item.title}</strong>
+              <p style={styles.subText}>{item.dept} • {item.date}</p>
+            </div>
+            <button style={styles.actionBtn}>View Details</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+
+function AssignmentsView({ assignments, onSubmit }) {
+  return (
+    <div>
+      <h3>📝 Assignments & Submissions</h3>
+      <ul style={styles.list}>
+        {assignments.map((item) => (
+          <li key={item.id} style={styles.listItem}>
+            <div>
+              <strong>{item.title}</strong>
+              <p style={styles.subText}>{item.subject} • Due: {item.dueDate}</p>
+            </div>
+            {item.status === 'Submitted' ? (
+              <span style={styles.badgeSuccess}>Submitted</span>
+            ) : (
+              <button style={styles.actionBtn} onClick={() => onSubmit(item.id)}>
+                Submit Assignment
+              </button>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+
+function AttendanceView() {
+  return (
+    <div>
+      <h3>📊 Attendance Tracker</h3>
+      <div style={styles.grid}>
+        <div style={styles.metricCard}>
+          <h4>CS3301 - Full Stack</h4>
+          <p style={styles.metricText}>88% Attendance</p>
+        </div>
+        <div style={styles.metricCard}>
+          <h4>CS3302 - DBMS</h4>
+          <p style={styles.metricText}>92% Attendance</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+function ProfileView() {
+  return (
+    <div>
+      <h3>👤 Student Profile</h3>
+      <div style={{ textAlign: 'left', lineHeight: '1.8' }}>
+        <p><strong>Name:</strong> RVU Student</p>
+        <p><strong>Department:</strong> School of Computer Science & Engineering (SOCSE)</p>
+        <p><strong>Course:</strong> CS3301 - Full Stack Development</p>
+        <p><strong>Status:</strong> Active Enrolled</p>
+      </div>
+    </div>
+  );
+}
+
+
+// RVU University Styling
+const styles = {
+  container: { maxWidth: '850px', margin: '30px auto', fontFamily: 'Arial, sans-serif' },
+  header: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#0A2240', padding: '15px 20px', borderRadius: '8px 8px 0 0', color: '#fff' },
+  backBtn: { backgroundColor: '#F2A900', border: 'none', padding: '8px 14px', fontWeight: 'bold', borderRadius: '4px', cursor: 'pointer', color: '#0A2240' },
+  tabContainer: { display: 'flex', backgroundColor: '#e0e0e0', borderBottom: '2px solid #0A2240' },
+  tab: { flex: 1, padding: '12px', border: 'none', background: 'none', cursor: 'pointer', fontWeight: 'bold', color: '#333' },
+  activeTab: { flex: 1, padding: '12px', border: 'none', backgroundColor: '#ffffff', color: '#0A2240', fontWeight: 'bold', borderTop: '3px solid #0A2240', cursor: 'pointer' },
+  contentCard: { backgroundColor: '#ffffff', padding: '25px', borderRadius: '0 0 8px 8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' },
+  list: { listStyle: 'none', padding: 0 },
+  listItem: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', borderBottom: '1px solid #eee' },
+  subText: { margin: '4px 0 0 0', fontSize: '12px', color: '#666' },
+  actionBtn: { backgroundColor: '#0A2240', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: '4px', cursor: 'pointer' },
+  badgeSuccess: { backgroundColor: '#28a745', color: '#fff', padding: '4px 8px', borderRadius: '4px', fontSize: '12px' },
+  grid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' },
+  metricCard: { border: '1px solid #ddd', padding: '15px', borderRadius: '6px', textAlign: 'center' },
+  metricText: { fontSize: '18px', fontWeight: 'bold', color: '#0A2240' }
+};
+

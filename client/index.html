@@ -13,18 +13,14 @@
 
     <!-- Top Navigation Header -->
     <header class="navbar">
-
         <div class="logo-group">
-
             <div class="brand-badge">
                 RV
             </div>
-
             <div>
                 <span class="university-name">
                     RV UNIVERSITY<sup>®</sup>
                 </span>
-
                 <p class="sub-dept">
                     School of Computer Science & Engineering
                 </p>
@@ -33,11 +29,11 @@
         </div>
 
         <div class="nav-actions">
-            <a href="/login" class="btn-secondary">
+            <a href="login.html" class="btn-secondary">
                 Login
             </a>
 
-            <a href="/register" class="btn-primary">
+            <a href="login.html#register" class="btn-primary">
                 Register
             </a>
         </div>
@@ -103,11 +99,11 @@
                     <div class="slide active-slide">
 
                         <img
-                            src="./src/assets/rvu_campus.png"
-                            alt="RV University Campus Infrastructure">
+                            src="./src/assets/slide1.jpg"
+                            alt="University Campus">
 
                         <div class="slide-caption">
-                            RV University Campus & Infrastructure
+                            Modern University Infrastructure
                         </div>
 
                     </div>
@@ -117,7 +113,7 @@
                     <div class="slide">
 
                         <img
-                            src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1000&auto=format&fit=crop"
+                            src="./src/assets/slide2.jpg"
                             alt="Student Collaboration">
 
                         <div class="slide-caption">
@@ -131,7 +127,7 @@
                     <div class="slide">
 
                         <img
-                            src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1000&auto=format&fit=crop"
+                            src="./src/assets/slide3.jpg"
                             alt="Digital Dashboard">
 
                         <div class="slide-caption">
@@ -209,7 +205,10 @@
 
                 </ul>
 
-                <a class="btn-portal student-bg" href="/student">
+                <!-- <button class="btn-portal student-bg" onclick="window.location.href='login.html'">
+                    Access Student View
+                </button> -->
+                <a href="#student" class="btn-portal student-bg">
                     Access Student View
                 </a>
 
@@ -269,13 +268,111 @@
 
             </article>
 
+
         </div>
 
     </section>
 
-    <!-- React App Root Container (AuthModule & StudentPortal) -->
-    <section id="auth" style="padding: 20px 0;">
-        <div id="auth-root"></div>
+    <!-- Student Overview Dashboard -->
+    <section class="section-container dashboard-section">
+        <h2 class="section-title">
+            Student Overview Dashboard
+        </h2>
+
+        <p class="section-subtitle">
+            Quick academic snapshot for students, faculty, and administrators.
+        </p>
+
+        <div class="dashboard-grid">
+            <div class="stat-card success-card">
+                <span class="stat-label">Overall Attendance</span>
+                <strong class="stat-value">87%</strong>
+                <small>Across all enrolled courses</small>
+            </div>
+
+            <div class="stat-card warning-card">
+                <span class="stat-label">Assignments Due</span>
+                <strong class="stat-value">04</strong>
+                <small>2 this week</small>
+            </div>
+
+            <div class="stat-card info-card">
+                <span class="stat-label">Active Notices</span>
+                <strong class="stat-value">12</strong>
+                <small>Updated today</small>
+            </div>
+        </div>
+
+        <div class="table-card">
+            <table class="portal-table">
+                <thead>
+                    <tr>
+                        <th>Course</th>
+                        <th>Attendance</th>
+                        <th>Assignments</th>
+                        <th>Marks</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>CS3301 - Full Stack</td>
+                        <td>92%</td>
+                        <td>2 Submitted</td>
+                        <td>88</td>
+                        <td><span class="status-badge success">Excellent</span></td>
+                    </tr>
+                    <tr>
+                        <td>CS3302 - DBMS</td>
+                        <td>85%</td>
+                        <td>1 Pending</td>
+                        <td>82</td>
+                        <td><span class="status-badge warning">On Track</span></td>
+                    </tr>
+                    <tr>
+                        <td>CS3304 - OS</td>
+                        <td>80%</td>
+                        <td>3 Submitted</td>
+                        <td>79</td>
+                        <td><span class="status-badge info">Stable</span></td>
+                    </tr>
+                    <tr>
+                        <td>CS3305 - AI</td>
+                        <td>90%</td>
+                        <td>2 Submitted</td>
+                        <td>91</td>
+                        <td><span class="status-badge success">Excellent</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Student portal shortcut section -->
+    <section id="student" class="section-container student-preview-section">
+        <h2 class="section-title">
+            Student Portal View
+        </h2>
+
+        <p class="section-subtitle">
+            Access notices, assignments, attendance, and profile updates from the student dashboard.
+        </p>
+
+        <div class="student-preview-box">
+            <div class="student-preview-copy">
+                <p><strong>Inside Student Portal:</strong></p>
+                <ul class="feature-bullets">
+                    <li>• View campus notices and event updates</li>
+                    <li>• Submit assignments directly from the dashboard</li>
+                    <li>• Track attendance and academic progress</li>
+                    <li>• Manage profile details and status</li>
+                </ul>
+            </div>
+
+            <a href="/student" class="btn-portal student-bg student-preview-btn">
+                Open Student Portal
+            </a>
+        </div>
     </section>
 
     <!-- Footer -->
@@ -285,30 +382,7 @@
     </footer>
 
     <script type="module" src="./src/main.jsx"></script>
-    <script>
-        // Carousel Functionality
-        const track = document.getElementById('carouselTrack');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const dots = document.querySelectorAll('.dot');
-        let currentSlide = 0;
-        const totalSlides = document.querySelectorAll('.slide').length;
 
-        function updateCarousel(index) {
-            currentSlide = (index + totalSlides) % totalSlides;
-            if (track) {
-                track.style.transform = `translateX(-${currentSlide * 100}%)`;
-            }
-            dots.forEach((dot, idx) => {
-                dot.classList.toggle('active-dot', idx === currentSlide);
-            });
-        }
-
-        if (prevBtn) prevBtn.addEventListener('click', () => updateCarousel(currentSlide - 1));
-        if (nextBtn) nextBtn.addEventListener('click', () => updateCarousel(currentSlide + 1));
-        dots.forEach((dot, idx) => {
-            dot.addEventListener('click', () => updateCarousel(idx));
-        });
-    </script>
 </body>
+
 </html>
