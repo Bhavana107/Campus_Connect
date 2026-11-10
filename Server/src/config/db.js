@@ -2,11 +2,18 @@ const mongoose = require("mongoose");
 
 const connectDB = async (uri = process.env.MONGO_URI) => {
   if (!uri) {
-    throw new Error("MONGO_URI is required. Set it in server/.env.");
+    console.warn("MONGO_URI is not configured. Starting in demo mode without MongoDB.");
+    return false;
   }
 
-  await mongoose.connect(uri);
-  console.log("MongoDB connected successfully");
+  try {
+    await mongoose.connect(uri);
+    console.log("MongoDB connected successfully");
+    return true;
+  } catch (error) {
+    console.warn(`MongoDB connection failed: ${error.message}. Starting in demo mode.`);
+    return false;
+  }
 };
 
 module.exports = connectDB;

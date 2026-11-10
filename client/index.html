@@ -128,7 +128,7 @@
 
                         <img
                             src="./src/assets/slide3.jpg"
-                            alt="Digital Dashboard">
+                            alt="Students collaborating in a university library">
 
                         <div class="slide-caption">
                             Real-Time Academic Management
@@ -154,20 +154,9 @@
         <!-- Slide Indicators -->
         <div class="carousel-dots" id="carouselDots">
 
-            <span
-                class="dot active-dot"
-                data-index="0">
-            </span>
-
-            <span
-                class="dot"
-                data-index="1">
-            </span>
-
-            <span
-                class="dot"
-                data-index="2">
-            </span>
+            <button class="dot active-dot" type="button" data-index="0" aria-label="Show campus slide" aria-pressed="true"></button>
+            <button class="dot" type="button" data-index="1" aria-label="Show student events slide" aria-pressed="false"></button>
+            <button class="dot" type="button" data-index="2" aria-label="Show student collaboration slide" aria-pressed="false"></button>
 
         </div>
 
@@ -381,6 +370,8 @@
         <p>Campus Connect Portal | Full Stack Development Lab</p>
     </footer>
 
+    <div id="auth-root"></div>
+    <script type="module" src="./src/carousel.js"></script>
     <script type="module" src="./src/main.jsx"></script>
 
 </body>

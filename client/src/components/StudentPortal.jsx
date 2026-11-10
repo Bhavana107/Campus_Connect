@@ -1,21 +1,32 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-
+import { getAssignments, submitAssignment } from '../services/api.js';
 
 export default function StudentPortal({ onBackToHome }) {
-  // Hook for programmatic client-side navigation
   const navigate = useNavigate();
-  // Hook to read the current URL path for active styling
   const location = useLocation();
-
   const [assignments, setAssignments] = useState([]);
+  const [isLoadingAssignments, setIsLoadingAssignments] = useState(true);
+  const [submittingAssignmentId, setSubmittingAssignmentId] = useState(null);
+  const [assignmentError, setAssignmentError] = useState('');
 
   useEffect(() => {
-    // Fetch assignments from the server when the component mounts
-    fetch('http://localhost:5000/api/assignments')
-      .then((res) => res.json())
-      .then((data) => setAssignments(data))
-      .catch((err) => console.error('Error fetching assignments:', err));
+    const controller = new AbortController();
+
+    getAssignments({ signal: controller.signal })
+      .then(setAssignments)
+      .catch((error) => {
+        if (error.name !== 'AbortError') {
+          setAssignmentError(error.message);
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) {
+          setIsLoadingAssignments(false);
+        }
+      });
+
+    return () => controller.abort();
   }, []);
 
   const notices = [
@@ -24,24 +35,26 @@ export default function StudentPortal({ onBackToHome }) {
   ];
 
 
-  const handleAssignmentSubmit = (id) => {
-    fetch(`http://localhost:5000/api/assignments/${id}/submit`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then((res) => res.json())
-      .then((updatedAssignment) => {
-        setAssignments(
-          assignments.map((item) =>
-            item.id === id ? updatedAssignment : item
-          )
-        );
-      })
-      .catch((err) => console.error('Error submitting assignment:', err));
-  }
+  const handleAssignmentSubmit = async (id) => {
+    setSubmittingAssignmentId(id);
+    setAssignmentError('');
+
+    try {
+      const updatedAssignment = await submitAssignment(id);
+      setAssignments((currentAssignments) =>
+        currentAssignments.map((item) =>
+          item.id === id ? updatedAssignment : item
+        )
+      );
+    } catch (error) {
+      setAssignmentError(error.message);
+    } finally {
+      setSubmittingAssignmentId(null);
+    }
+  };
 
   return (
-    <div style={styles.container}>
+    <div id="student-portal" style={styles.container}>
       {/* Header View */}
       <header style={styles.header}>
         <div>
@@ -96,7 +109,15 @@ export default function StudentPortal({ onBackToHome }) {
           <Route path="notices" element={<NoticesView notices={notices} />} />
           <Route
             path="assignments"
-            element={<AssignmentsView assignments={assignments} onSubmit={handleAssignmentSubmit} />}
+            element={(
+              <AssignmentsView
+                assignments={assignments}
+                isLoading={isLoadingAssignments}
+                submittingId={submittingAssignmentId}
+                error={assignmentError}
+                onSubmit={handleAssignmentSubmit}
+              />
+            )}
           />
           <Route path="attendance" element={<AttendanceView />} />
           <Route path="profile" element={<ProfileView />} />
@@ -128,27 +149,38 @@ function NoticesView({ notices }) {
 }
 
 
-function AssignmentsView({ assignments, onSubmit }) {
+function AssignmentsView({ assignments, isLoading, submittingId, error, onSubmit }) {
   return (
     <div>
       <h3>📝 Assignments & Submissions</h3>
-      <ul style={styles.list}>
-        {assignments.map((item) => (
-          <li key={item.id} style={styles.listItem}>
-            <div>
-              <strong>{item.title}</strong>
-              <p style={styles.subText}>{item.subject} • Due: {item.dueDate}</p>
-            </div>
-            {item.status === 'Submitted' ? (
-              <span style={styles.badgeSuccess}>Submitted</span>
-            ) : (
-              <button style={styles.actionBtn} onClick={() => onSubmit(item.id)}>
-                Submit Assignment
-              </button>
-            )}
-          </li>
-        ))}
-      </ul>
+      {error && <p role="alert" style={styles.errorMessage}>{error}</p>}
+      {isLoading ? (
+        <p role="status">Loading assignments…</p>
+      ) : assignments.length === 0 && !error ? (
+        <p>No assignments are available right now.</p>
+      ) : assignments.length === 0 ? null : (
+        <ul style={styles.list}>
+          {assignments.map((item) => (
+            <li key={item.id} style={styles.listItem}>
+              <div>
+                <strong>{item.title}</strong>
+                <p style={styles.subText}>{item.subject} • Due: {item.dueDate}</p>
+              </div>
+              {item.status === 'Submitted' ? (
+                <span style={styles.badgeSuccess}>Submitted</span>
+              ) : (
+                <button
+                  style={styles.actionBtn}
+                  onClick={() => onSubmit(item.id)}
+                  disabled={submittingId !== null}
+                >
+                  {submittingId === item.id ? 'Submitting…' : 'Submit Assignment'}
+                </button>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
@@ -201,9 +233,9 @@ const styles = {
   listItem: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', borderBottom: '1px solid #eee' },
   subText: { margin: '4px 0 0 0', fontSize: '12px', color: '#666' },
   actionBtn: { backgroundColor: '#0A2240', color: '#fff', border: 'none', padding: '6px 12px', borderRadius: '4px', cursor: 'pointer' },
+  errorMessage: { color: '#b42318', margin: '12px 0' },
   badgeSuccess: { backgroundColor: '#28a745', color: '#fff', padding: '4px 8px', borderRadius: '4px', fontSize: '12px' },
   grid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' },
   metricCard: { border: '1px solid #ddd', padding: '15px', borderRadius: '6px', textAlign: 'center' },
   metricText: { fontSize: '18px', fontWeight: 'bold', color: '#0A2240' }
 };
-

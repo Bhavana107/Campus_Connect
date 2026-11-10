@@ -12,7 +12,7 @@
 - **Layouts with CSS Grid & Flexbox**:
   - Flexbox-driven navigation bar, logo grouping, and control groups.
   - Multi-column CSS Grid for role cards (`Student Portal`, `Faculty Portal`, `Admin Portal`) adapting automatically across viewport widths.
-- **Campus Life Carousel**: Smooth image slider featuring authentic RV University campus visuals with next/previous controls and indicator dots.
+- **Campus Life Carousel**: Auto-advancing image slider with local campus and student photos, next/previous controls, and indicator dots.
 - **Micro-Interactions**: Hover animations (`transform: translateY(-8px)` and elevated drop-shadows) on role cards and interactive buttons.
 - **Mobile Responsiveness**: Adaptive media queries (`@media (max-width: 768px)` and `@media (max-width: 480px)`) ensuring seamless rendering on mobile devices.
 
@@ -28,23 +28,17 @@
 - **Task 3: Attendance Counter**: Closure and arrow function maintaining a private counter incremented via button click.
 - **Task 4: Quick Alerts & Dialogs**: Native alert, confirm, and prompt interactions.
 
-### 4. Interactive Notice & Task Board (`client/experiment3.html`)
-- **Real-Time Input Reflection**: Listens to the `input` event to project user typing dynamically without reloading.
-- **Dynamic DOM Creation**: Generates and appends new list items via `document.createElement()` and `appendChild()`.
-- **Dynamic Deletion & Style Toggling**: Removes items using `.remove()` and toggles task completion lines.
-- **Theme Toggling**: Uses `classList.toggle('dark-theme')` to switch between light and dark modes.
-
-### 5. State-Driven Task & Study Planner (`client/experiment4.html`)
+### 4. State-Driven Task & Study Planner (`client/experiment4.html`)
 - **Predictable State Architecture**: Driven by a single state source of truth (`UI = f(state)`).
 - **Reactive Render Cycle**: User actions mutate state first, immediately triggering a full interface re-draw.
 - **Task Filtering & Priority Badges**: Filter between `All`, `Pending`, and `Completed` tasks with color-coded priority indicators (High, Medium, Low).
 - **State Persistence**: Preserves data across browser reloads using `localStorage`.
 
-### 6. Backend API Server (`server/`)
+### 5. Backend API Server (`Server/`)
 - Built with **Node.js** and **Express 5**.
 - Modular routing architecture with `/api/auth` endpoints.
 - MongoDB and Mongoose integration for user and session management.
-- CORS configuration enabling seamless communication with the client.
+- Assignment requests use a shared client API service and Vite's `/api` development proxy.
 
 ---
 
@@ -69,22 +63,23 @@ Campus_Connect/
 │   ├── index.html                 # Main Campus Connect portal landing page
 │   ├── login.html                 # Student login & registration portal
 │   ├── attendance.html            # Student performance & attendance dashboard
-│   ├── experiment3.html           # DOM manipulation & events demonstration
-│   ├── experiment3.js             # External script for Experiment 3
 │   ├── experiment4.html           # State-driven task & study planner
 │   ├── experiment4.js             # State management & render engine for Experiment 4
-│   ├── package.json               # Client dependencies (React, Vite, Axios)
+│   ├── package.json               # Client dependencies (React, Vite)
 │   ├── src/
 │   │   ├── style.css              # Main external stylesheet (Grid, Flex, Media queries)
+│   │   ├── carousel.js            # Auto-advancing home-page image carousel
 │   │   ├── main.jsx               # React entry point
 │   │   ├── App.jsx                # Core React router component
-│   │   ├── assets/                # Images & SVGs (rvu_campus.png, slide1.jpg)
-│   │   └── components/
-│   │       ├── AuthModule.jsx     # React authentication component
-│   │       └── StudentPortal.jsx  # Student dashboard view
+│   │   ├── assets/                # Local campus and student carousel photos
+│   │   ├── components/
+│   │   │   ├── AuthModule.jsx     # React authentication component
+│   │   │   └── StudentPortal.jsx  # Student dashboard view
+│   │   └── services/
+│   │       └── api.js             # Shared assignment API client
 │   └── public/                    # Static assets & icons
-└── server/                        # Backend REST API
-    ├── package.json               # Server dependencies (Express, Mongoose, JWT)
+└── Server/                        # Backend REST API
+    ├── package.json               # Server dependencies (Express, Mongoose)
     └── src/
         ├── app.js                 # Express server configuration & route mounting
         ├── config/
@@ -102,7 +97,6 @@ Campus_Connect/
 | Experiment | Title | Implementation |
 | :--- | :--- | :--- |
 | **Experiment 2** | Responsive Web Pages with HTML5 & CSS3 | [`client/index.html`](client/index.html) & [`client/src/style.css`](client/src/style.css) |
-| **Experiment 3** | DOM Manipulation, Events & Dynamic Content | [`client/experiment3.html`](client/experiment3.html) & [`client/experiment3.js`](client/experiment3.js) |
 | **Experiment 4** | State Handling & Version Control | [`client/experiment4.html`](client/experiment4.html) & [`client/experiment4.js`](client/experiment4.js) |
 
 ---
@@ -119,10 +113,9 @@ cd Campus-connect
 You can open any of the HTML pages directly in your browser or with VS Code **Live Server**:
 - **Home Page**: `client/index.html`
 - **Login Portal**: `client/login.html`
-- **Experiment 3**: `client/experiment3.html`
 - **Experiment 4**: `client/experiment4.html`
 
-Alternatively, launch the Vite development server:
+Launch the Vite development server:
 ```bash
 cd client
 npm install
@@ -130,18 +123,21 @@ npm run dev
 ```
 
 ### 3. Run the Backend Server
-Copy `server/.env.example` to `server/.env`, then set `MONGO_URI` to your
+Copy `Server/.env.example` to `Server/.env`, then set `MONGO_URI` to your
 MongoDB connection string. For a local MongoDB server, the example URI is
 already provided. For MongoDB Atlas, use the connection string from your
 cluster and replace its username, password, and database name locally. Do not
-commit `server/.env` or share its connection string.
+commit `Server/.env` or share its connection string.
 
 ```bash
-cd server
+cd Server
 npm install
 npm run dev
 ```
-The server connects to MongoDB before starting on `http://localhost:5000`.
+The Vite development proxy sends `/api` requests to `http://localhost:5000`.
+For separate deployments, set `VITE_API_BASE_URL` in the client environment to
+the API base URL and configure `CLIENT_ORIGIN` on the server to the deployed
+client origin.
 
 ---
 

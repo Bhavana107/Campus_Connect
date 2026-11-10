@@ -15,20 +15,21 @@ export default function AuthModule({ initialMode = 'login' }) {
     password: ''
   });
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
     if (isLogin) {
-      alert(`Logging in with: ${formData.email}`);
+      window.alert(`Logging in with: ${formData.email}`);
     } else {
-      alert(`RVU Student Registered: ${formData.name} (${formData.email})`);
+      window.alert(`RVU Student Registered: ${formData.name} (${formData.email})`);
     }
   };
 

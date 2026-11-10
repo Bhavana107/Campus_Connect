@@ -24,15 +24,7 @@ export default function App() {
   return (
     <div style={{ padding: '20px 0' }}>
       <Routes>
-        <Route
-          path="/"
-          element={(
-            <>
-              <StudentPortal />
-              <AuthModule initialMode="login" />
-            </>
-          )}
-        />
+        <Route path="/" element={<AuthModule initialMode="login" />} />
         <Route path="/login" element={<AuthModule initialMode="login" />} />
         <Route path="/register" element={<AuthModule initialMode="register" />} />
         <Route
